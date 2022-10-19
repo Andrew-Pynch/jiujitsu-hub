@@ -51,7 +51,7 @@ async fn main() -> std::io::Result<()> {
             .service(update_match_record_by_id)
             .service(delete_all_match_records)
     })
-    .bind((host, port))?
+    // .bind((host, port))?
     .run()
     .await
 }
