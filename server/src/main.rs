@@ -2,6 +2,8 @@ mod api;
 mod constants;
 mod model;
 
+use std::{env, net::Ipv4Addr};
+
 use actix_web::{middleware::Logger, web::Data, App, HttpServer};
 
 use api::match_record_request::{
@@ -16,11 +18,19 @@ async fn main() -> std::io::Result<()> {
     std::env::set_var("RUST_BACKTRACE", "1");
     env_logger::init();
 
-    // dotenv().ok(); // This line loads the environment variables from the ".env" file.
-    // let redis_connection_string =
-    //     std::env::var("REDIS_CONNECTION_STRING").expect("REDIS_CONNECTION_STRING must be set");
+    let host: Ipv4Addr;
+    let port: u16;
+    let args: Vec<String> = env::args().collect();
+    dbg!("ARGS", args.clone());
+    if args[1] == "prod" {
+        host = Ipv4Addr::new(0, 0, 0, 0);
+        port = args[2].parse::<u16>().unwrap();
+    } else {
+        host = Ipv4Addr::new(127, 0, 0, 1);
+        port = 8080;
+    }
 
-    // let redis_client = redis::Client::open(redis_connection_string).unwrap();
+    // dotenv().ok(); // This line loads the environment variables from the ".env" file.
     let redis_client = redis::Client::open(
         "redis://default:jgkaZXUErywVyWqWj5NF@containers-us-west-59.railway.app:7051",
     )
@@ -41,7 +51,7 @@ async fn main() -> std::io::Result<()> {
             .service(update_match_record_by_id)
             .service(delete_all_match_records)
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind((host, port))?
     .run()
     .await
 }
