@@ -3,17 +3,19 @@ use api::match_record::{get_match_record, post_match_record};
 
 use actix_web::{middleware::Logger, web::Data, App, HttpServer};
 
+use dotenv::dotenv;
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     std::env::set_var("RUST_LOG", "debug");
     std::env::set_var("RUST_BACKTRACE", "1");
     env_logger::init();
 
-    // let config = aws_config::load_from_env().await;
-    let redis_client = redis::Client::open(
-        "redis://default:jgkaZXUErywVyWqWj5NF@containers-us-west-59.railway.app:7051",
-    )
-    .unwrap();
+    dotenv().ok(); // This line loads the environment variables from the ".env" file.
+    let redis_connection_string =
+        std::env::var("REDIS_CONNECTION_STRING").expect("REDIS_CONNECTION_STRING must be set");
+
+    let redis_client = redis::Client::open(redis_connection_string).unwrap();
 
     let rdb_data = Data::new(redis_client);
     HttpServer::new(move || {
