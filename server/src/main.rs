@@ -1,8 +1,13 @@
 mod api;
-use api::match_record::{get_match_record, post_match_record};
+mod constants;
+mod model;
 
 use actix_web::{middleware::Logger, web::Data, App, HttpServer};
 
+use api::match_record_request::{
+    delete_all_match_records, get_all_match_records, get_match_record, post_match_record,
+    post_match_record_example,
+};
 use dotenv::dotenv;
 
 #[actix_web::main]
@@ -25,8 +30,11 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .wrap(logger)
             .app_data(rdb_data.clone())
+            .service(get_all_match_records)
             .service(get_match_record)
+            .service(post_match_record_example)
             .service(post_match_record)
+            .service(delete_all_match_records)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
