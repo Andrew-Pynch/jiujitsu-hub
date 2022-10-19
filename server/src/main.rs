@@ -6,7 +6,7 @@ use actix_web::{middleware::Logger, web::Data, App, HttpServer};
 
 use api::match_record_request::{
     delete_all_match_records, get_all_match_records, get_match_record, post_match_record,
-    post_match_record_example,
+    post_match_record_example, update_match_record_by_id,
 };
 use dotenv::dotenv;
 
@@ -34,6 +34,7 @@ async fn main() -> std::io::Result<()> {
             .service(get_match_record)
             .service(post_match_record_example)
             .service(post_match_record)
+            .service(update_match_record_by_id)
             .service(delete_all_match_records)
     })
     .bind(("127.0.0.1", 8080))?

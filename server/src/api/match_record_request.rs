@@ -89,13 +89,14 @@ pub async fn post_match_record(
 pub async fn update_match_record_by_id(
     rdb_data: Data<Client>,
     match_record: Json<MatchRecord>,
+    match_id: web::Path<String>,
 ) -> Result<Json<String>, error::Error> {
     let mut conn = rdb_data.get_connection().unwrap();
 
     let match_json = serde_json::to_string(&match_record).unwrap();
 
     let match_record_json: String = redis::cmd("SET")
-        .arg(match_record.clone().match_id)
+        .arg(match_id.clone())
         .arg(match_json)
         .query(&mut conn)
         .unwrap();
