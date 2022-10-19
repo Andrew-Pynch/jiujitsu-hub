@@ -20,7 +20,11 @@ async fn main() -> std::io::Result<()> {
     let redis_connection_string =
         std::env::var("REDIS_CONNECTION_STRING").expect("REDIS_CONNECTION_STRING must be set");
 
-    let redis_client = redis::Client::open(redis_connection_string).unwrap();
+    // let redis_client = redis::Client::open(redis_connection_string).unwrap();
+    let redis_client = redis::Client::open(
+        "redis://default:jgkaZXUErywVyWqWj5NF@containers-us-west-59.railway.app:7051",
+    )
+    .unwrap();
 
     let rdb_data = Data::new(redis_client);
     HttpServer::new(move || {
