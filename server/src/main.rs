@@ -16,9 +16,9 @@ async fn main() -> std::io::Result<()> {
     std::env::set_var("RUST_BACKTRACE", "1");
     env_logger::init();
 
-    dotenv().ok(); // This line loads the environment variables from the ".env" file.
-    let redis_connection_string =
-        std::env::var("REDIS_CONNECTION_STRING").expect("REDIS_CONNECTION_STRING must be set");
+    // dotenv().ok(); // This line loads the environment variables from the ".env" file.
+    // let redis_connection_string =
+    //     std::env::var("REDIS_CONNECTION_STRING").expect("REDIS_CONNECTION_STRING must be set");
 
     // let redis_client = redis::Client::open(redis_connection_string).unwrap();
     let redis_client = redis::Client::open(
