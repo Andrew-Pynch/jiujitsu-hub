@@ -14,21 +14,14 @@ use dotenv::dotenv;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    dotenv().ok();
+
     std::env::set_var("RUST_LOG", "debug");
     std::env::set_var("RUST_BACKTRACE", "1");
     env_logger::init();
 
-    let host: Ipv4Addr;
-    let port: u16;
-    let args: Vec<String> = env::args().collect();
-    dbg!("ARGS", args.clone());
-    if args[1] == "prod" {
-        host = Ipv4Addr::new(0, 0, 0, 0);
-        port = args[2].parse::<u16>().unwrap();
-    } else {
-        host = Ipv4Addr::new(127, 0, 0, 1);
-        port = 8080;
-    }
+    let host = env::var("HOST").expect("HOST is not set");
+    let port = env::var("PORT").expect("PORT is not set");
 
     // dotenv().ok(); // This line loads the environment variables from the ".env" file.
     let redis_client = redis::Client::open(
@@ -51,7 +44,7 @@ async fn main() -> std::io::Result<()> {
             .service(update_match_record_by_id)
             .service(delete_all_match_records)
     })
-    // .bind((host, port))?
+    .bind(format!("{}:{}", host, port))?
     .run()
     .await
 }
