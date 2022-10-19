@@ -20,7 +20,8 @@ async fn main() -> std::io::Result<()> {
     std::env::set_var("RUST_BACKTRACE", "1");
     env_logger::init();
 
-    let host = env::var("HOST").expect("HOST is not set");
+    // let host = env::var("HOST").expect("HOST is not set");
+    let host = "0.0.0.0";
     let port = env::var("PORT").expect("PORT is not set");
 
     // dotenv().ok(); // This line loads the environment variables from the ".env" file.
