@@ -4,7 +4,11 @@ mod model;
 
 use std::{env, net::Ipv4Addr};
 
-use actix_web::{middleware::Logger, web::Data, App, HttpServer};
+use actix_web::{
+    middleware::Logger,
+    web::{self, Data},
+    App, HttpServer,
+};
 
 use api::match_record_request::{
     delete_all_match_records, get_all_match_records, get_match_record, post_match_record,
@@ -21,8 +25,14 @@ async fn main() -> std::io::Result<()> {
     env_logger::init();
 
     // let host = env::var("HOST").expect("HOST is not set");
-    let host = "0.0.0.0";
-    let port = env::var("PORT").expect("PORT is not set");
+    let host;
+    let port = env::var("PORT").unwrap_or("8080".to_string());
+    if port == "8080" {
+        host = "127.0.0.1";
+    } else {
+        host = "0.0.0.0"
+    }
+    dbg!("Starting server on...", host.clone(), port.clone());
 
     // dotenv().ok(); // This line loads the environment variables from the ".env" file.
     let redis_client = redis::Client::open(
@@ -38,6 +48,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .wrap(logger)
             .app_data(rdb_data.clone())
+            .route("/hello", web::get().to(|| async { "Hello World!" }))
             .service(get_all_match_records)
             .service(get_match_record)
             .service(post_match_record_example)
