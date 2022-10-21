@@ -1,12 +1,14 @@
-import { Input, Label, Radio, Switch } from '@rebass/forms';
-import { Formik } from 'formik';
-import React, { useState } from 'react';
+import { Input, Label, Radio } from '@rebass/forms';
+import { useState } from 'react';
 import { Box, Button, Flex, Heading } from 'rebass';
 import FRow from '../../components/FRow';
+import { useMatchRecordApi } from '../../middleware/useMatchRecordApi';
 
 type RecordProps = {};
 
 const Record = (props: RecordProps) => {
+    const { test } = useMatchRecordApi();
+
     const [opponent, setOponent] = useState('');
     const [result, setResult] = useState<
         'won' | 'stalled' | 'tied' | 'lost' | ''
@@ -19,6 +21,16 @@ const Record = (props: RecordProps) => {
         []
     );
 
+    const getfetch = async () => {
+        // const result = await fetch(
+        //     'https://jiujitsu-hub-production.up.railway.app' + '/hello',
+        //     {
+        //         method: 'GET',
+        //     }
+        // );
+        const result = await test();
+    };
+    getfetch();
     return (
         <Box width="100vw" height="100vh">
             <Flex

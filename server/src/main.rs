@@ -4,7 +4,9 @@ mod model;
 
 use std::{env, net::Ipv4Addr};
 
+use actix_cors::Cors;
 use actix_web::{
+    http,
     middleware::Logger,
     web::{self, Data},
     App, HttpServer,
@@ -42,11 +44,12 @@ async fn main() -> std::io::Result<()> {
 
     let rdb_data = Data::new(redis_client);
     HttpServer::new(move || {
-        // let ddb_repo: DDBRepository = DDBRepository::init(String::from("task"), config.clone());
-        // let ddb_data = Data::new(ddb_repo);
+        let cors = Cors::permissive();
+
         let logger = Logger::default();
         App::new()
             .wrap(logger)
+            .wrap(cors)
             .app_data(rdb_data.clone())
             .route("/hello", web::get().to(|| async { "Hello World!" }))
             .service(get_all_match_records)
