@@ -49,7 +49,7 @@ export const customFetch = async (
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${bearerToken}`,
             },
-            // body: method !== RequestType.GET ? payloadBody : undefined,
+            body: method !== RequestType.GET ? payloadBody : undefined,
         });
         return response;
     } catch (e: any) {

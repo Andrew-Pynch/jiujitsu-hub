@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import { useState } from 'react';
 import { Box } from 'rebass';
-import { useTheme } from '../../assets/useTheme';
+import { useTheme } from '../../assets/useCustomTheme';
 import { trpc } from '../../config/trpc';
 
 const Home: NextPage = () => {

@@ -2,36 +2,55 @@ import { Input, Label, Radio } from '@rebass/forms';
 import { useState } from 'react';
 import { Box, Button, Flex, Heading } from 'rebass';
 import FRow from '../../components/FRow';
+import { EMatchResult, IMatchRecord } from '../../domain/MatchRecord';
 import { useMatchRecordApi } from '../../middleware/useMatchRecordApi';
 
-type RecordProps = {};
+type AddRecordProps = {};
 
-const Record = (props: RecordProps) => {
-    const { test } = useMatchRecordApi();
+const AddRecord = (props: AddRecordProps) => {
+    const { addMatchRecord } = useMatchRecordApi();
 
     const [opponent, setOponent] = useState('');
     const [result, setResult] = useState<
         'won' | 'stalled' | 'tied' | 'lost' | ''
     >('');
     const [approximateDuration, setApproximateDuration] = useState(0);
-    const [resultBy, setResultBy] = useState<'points' | 'submission' | ''>('');
+    const [resultBy, setResultBy] = useState<EMatchResult>(EMatchResult.POINTS);
     const [submissionType, setSubmissionType] = useState('');
     const [notes, setNotes] = useState('');
     const [positionsStruggledIn, setPositionsStruggledIn] = useState<string[]>(
         []
     );
 
-    const getfetch = async () => {
-        // const result = await fetch(
-        //     'https://jiujitsu-hub-production.up.railway.app' + '/hello',
-        //     {
-        //         method: 'GET',
-        //     }
-        // );
-        const json = await test();
-        console.log('result json', json);
+    const handleAddMatchRecord = async () => {
+        const recordToAdd: IMatchRecord = {
+            match_id: '',
+            opponent: opponent,
+            won: result === 'won',
+            lost: result === 'lost',
+            tied: result === 'tied',
+            stalled: result === 'stalled',
+            approximate_match_duration: approximateDuration,
+            result_by: resultBy,
+            submission_type: submissionType,
+            positions_struggled_in: positionsStruggledIn,
+            notes: notes,
+        };
+
+        const json = await addMatchRecord(recordToAdd);
+        resetFields();
     };
-    getfetch();
+
+    const resetFields = () => {
+        setOponent('');
+        setResult('');
+        setApproximateDuration(0);
+        setResultBy(EMatchResult.POINTS);
+        setSubmissionType('');
+        setNotes('');
+        setPositionsStruggledIn([]);
+    };
+
     return (
         <Box width="100vw" height="100vh">
             <Flex
@@ -101,14 +120,16 @@ const Record = (props: RecordProps) => {
                     <Label>
                         <Radio
                             name="resultby"
-                            onClick={(e) => setResultBy('points')}
+                            onClick={(e) => setResultBy(EMatchResult.POINTS)}
                         />
                         Points
                     </Label>
                     <Label>
                         <Radio
                             name="resultby"
-                            onClick={(e) => setResultBy('submission')}
+                            onClick={(e) =>
+                                setResultBy(EMatchResult.SUBMISSION)
+                            }
                         />
                         Submission
                     </Label>
@@ -144,6 +165,7 @@ const Record = (props: RecordProps) => {
                             backgroundColor: 'tomato',
                         },
                     }}
+                    onClick={handleAddMatchRecord}
                 >
                     Submit
                 </Button>
@@ -152,4 +174,4 @@ const Record = (props: RecordProps) => {
     );
 };
 
-export default Record;
+export default AddRecord;

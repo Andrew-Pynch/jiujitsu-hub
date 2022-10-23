@@ -18,6 +18,7 @@ pub struct MatchRecord {
     pub result_by: EMatchResult,
     pub submission_type: String,
     pub positions_struggled_in: Vec<String>,
+    pub notes: String,
 }
 
 pub fn get_example_match_record(match_id: String) -> MatchRecord {
@@ -32,6 +33,7 @@ pub fn get_example_match_record(match_id: String) -> MatchRecord {
         result_by: EMatchResult::Points,
         submission_type: String::from("Armbar"),
         positions_struggled_in: vec![String::from("Guard"), String::from("Side Control")],
+        notes: "This was a great match!".to_string(),
     };
 }
 
@@ -47,5 +49,6 @@ pub fn get_formatted_match_record(match_id: String, match_record: MatchRecord) -
         result_by: match_record.result_by,
         submission_type: match_record.submission_type,
         positions_struggled_in: match_record.positions_struggled_in,
+        notes: match_record.notes,
     };
 }

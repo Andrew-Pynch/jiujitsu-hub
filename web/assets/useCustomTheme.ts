@@ -35,7 +35,7 @@ export const THEME = {
     },
 };
 
-export const useTheme = () => {
+export const useCustomTheme = () => {
     const primary = THEME.colors.primary;
     const secondary = THEME.colors.secondary;
 

@@ -5,7 +5,7 @@ export const useMatchRecordApi = () => {
     const test = async () => {
         const result = await customFetch(RequestType.GET, '/hello', '', {});
         if (result.status === NetworkCode.OK) {
-            return await result.json();
+            return result;
         }
     };
 
@@ -17,7 +17,7 @@ export const useMatchRecordApi = () => {
             {}
         );
         if (result.status === NetworkCode.OK) {
-            return await result.json();
+            return result;
         }
     };
 
@@ -29,7 +29,7 @@ export const useMatchRecordApi = () => {
             {}
         );
         if (result.status === NetworkCode.OK) {
-            return await result.json();
+            return result;
         }
     };
 
@@ -41,7 +41,7 @@ export const useMatchRecordApi = () => {
             {}
         );
         if (result.status === NetworkCode.OK) {
-            return await result.json();
+            return result;
         }
     };
 
@@ -53,7 +53,7 @@ export const useMatchRecordApi = () => {
             matchRecord
         );
         if (result.status === NetworkCode.OK) {
-            return await result.json();
+            return result;
         }
     };
 
@@ -65,7 +65,7 @@ export const useMatchRecordApi = () => {
             matchRecord
         );
         if (result.status === NetworkCode.OK) {
-            return await result.json();
+            return result;
         }
     };
 
@@ -77,7 +77,7 @@ export const useMatchRecordApi = () => {
             {}
         );
         if (result.status === NetworkCode.OK) {
-            return await result.json();
+            return result;
         }
     };
 
@@ -89,7 +89,7 @@ export const useMatchRecordApi = () => {
             {}
         );
         if (result.status === NetworkCode.OK) {
-            return await result.json();
+            return result;
         }
     };
 

@@ -1,25 +1,9 @@
 import type { NextPage } from 'next';
 
-import { Button } from 'rebass';
-
-import Link from 'next/link';
-import { useTheme } from '../assets/useTheme';
+import ShowRecords from './show_records/show_records';
 
 const Home: NextPage = () => {
-    const { primary, secondary } = useTheme();
-
-    return (
-        <Button>
-            <Link
-                color={primary}
-                href={{
-                    pathname: '/login',
-                }}
-            >
-                Login
-            </Link>
-        </Button>
-    );
+    return <ShowRecords />;
 };
 
 export default Home;

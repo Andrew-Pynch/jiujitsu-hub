@@ -1,11 +1,10 @@
-import React from 'react';
 import { Box } from 'rebass';
-import { useTheme } from '../../assets/useTheme';
+import { useCustomTheme } from '../../assets/useCustomTheme';
 
 type LoginProps = {};
 
 const Login = (props: LoginProps) => {
-    const { primary, secondary } = useTheme();
+    const { primary, secondary } = useCustomTheme();
 
     return <Box backgroundColor={primary}>Login</Box>;
 };

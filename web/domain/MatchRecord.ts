@@ -14,4 +14,5 @@ export interface IMatchRecord {
     result_by: EMatchResult;
     submission_type: string;
     positions_struggled_in: string[];
+    notes: string;
 }
