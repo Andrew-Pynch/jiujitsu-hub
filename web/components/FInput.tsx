@@ -26,10 +26,6 @@ const FInput = (props: FInputProps) => {
                     opacity: 0.8,
                 },
                 ':focus': {
-                    //
-                    // borderRadius: '8px',
-                    // borderColor: primary,
-                    // color: primary,
                     outline: 'none',
                     transition: 'all ease-out 0.2s',
                     borderRadius: '8px',
