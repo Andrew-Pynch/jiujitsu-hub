@@ -1,28 +1,33 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { GiHamburgerMenu } from 'react-icons/gi';
-import { Box, Button, Heading } from 'rebass';
+import { Box, Button, Text } from 'rebass';
 import { useCustomTheme } from '../assets/useCustomTheme';
 
 type NavigationSidebarProps = {};
 
 const NavigationSidebar = (props: NavigationSidebarProps) => {
-    const { primary, secondary } = useCustomTheme();
+    const router = useRouter();
+
+    const { background, primary, secondary, textPrimary, textSecondary } =
+        useCustomTheme();
 
     const [isOpen, setIsOpen] = useState(true);
-    const [width, setWidth] = useState<'200px' | '45px'>('200px');
+    const [width, setWidth] = useState<'200px' | '50px'>('200px');
 
     const handleHamburgerClick = () => {
         const newIsOpenValue = !isOpen;
         setIsOpen(newIsOpenValue);
         if (newIsOpenValue) setWidth('200px');
-        else setWidth('45px');
+        else setWidth('50px');
     };
 
     interface IRoute {
         path: string;
         label: string;
     }
+
     const routes: IRoute[] = [
         {
             path: '/show_records',
@@ -37,14 +42,15 @@ const NavigationSidebar = (props: NavigationSidebarProps) => {
     return (
         <Box
             width={width}
-            backgroundColor={secondary}
+            backgroundColor={primary}
             style={{
                 transition: 'all ease-out 0.5s',
             }}
+            height="100%"
         >
             <Button
-                width={'20px'}
-                backgroundColor={secondary}
+                width={'25px'}
+                backgroundColor={primary}
                 sx={{
                     ':hover': {
                         opacity: 0.8,
@@ -53,7 +59,7 @@ const NavigationSidebar = (props: NavigationSidebarProps) => {
                 }}
                 onClick={handleHamburgerClick}
             >
-                <GiHamburgerMenu size={'15px'} color={primary} />
+                <GiHamburgerMenu size={'15px'} color={secondary} />
             </Button>
             {isOpen && (
                 <Box>
@@ -61,9 +67,17 @@ const NavigationSidebar = (props: NavigationSidebarProps) => {
                         return (
                             <Box
                                 key={route.path}
+                                height="50px"
+                                backgroundColor={
+                                    router.pathname === route.path
+                                        ? secondary
+                                        : primary
+                                }
                                 sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
                                     ':hover': {
-                                        backgroundColor: primary,
+                                        backgroundColor: secondary,
                                         cursor: 'pointer',
                                     },
                                 }}
@@ -73,7 +87,9 @@ const NavigationSidebar = (props: NavigationSidebarProps) => {
                                         pathname: route.path,
                                     }}
                                 >
-                                    <Heading>{route.label}</Heading>
+                                    <Text fontSize={28} fontWeight={600}>
+                                        {route.label}
+                                    </Text>
                                 </Link>
                             </Box>
                         );

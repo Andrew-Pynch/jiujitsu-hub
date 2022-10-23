@@ -3,17 +3,18 @@ import type { AppProps } from 'next/app';
 import { Box } from 'rebass';
 import { THEME } from '../assets/useCustomTheme';
 import NavigationSidebar from '../components/NavigationSidebar';
+import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
         // Provide the client to your App
         <ThemeProvider theme={THEME}>
-            <Box display={'flex'} flex={1}>
-                <Box flexDirection={'column'} width="15%">
+            <Box display={'flex'} flex={1} height={'100vh'}>
+                <Box flexDirection={'column'} maxWidth="15%">
                     <NavigationSidebar />
                 </Box>
                 <Box width="5%" />
-                <Box flexDirection={'column'} width="80%">
+                <Box flexDirection={'column'} maxWidth="80%" flexGrow={1}>
                     <Component {...pageProps} />
                 </Box>
             </Box>

@@ -1,6 +1,8 @@
-import { Input, Label, Radio } from '@rebass/forms';
+import { Input, Radio } from '@rebass/forms';
 import { useState } from 'react';
-import { Box, Button, Flex, Heading } from 'rebass';
+import { Box, Button, Flex } from 'rebass';
+import FInput from '../../components/FInput';
+import FLabel from '../../components/FLabel';
 import FRow from '../../components/FRow';
 import { EMatchResult, IMatchRecord } from '../../domain/MatchRecord';
 import { useMatchRecordApi } from '../../middleware/useMatchRecordApi';
@@ -63,7 +65,7 @@ const AddRecord = (props: AddRecordProps) => {
                 }}
             >
                 <FRow>
-                    <Label>Opponent</Label>
+                    <FLabel>Opponent</FLabel>
                     <Input
                         id="opponent"
                         type="text"
@@ -75,39 +77,46 @@ const AddRecord = (props: AddRecordProps) => {
                     />
                 </FRow>
                 <FRow>
-                    <Heading>Result</Heading>
-                    <Label>
+                    <p
+                        style={{
+                            fontSize: 30,
+                            fontWeight: 800,
+                        }}
+                    >
+                        Result
+                    </p>
+                    <FLabel>
                         <Radio
                             name="result"
                             onClick={(e) => setResult('won')}
                         />
                         Won
-                    </Label>
-                    <Label>
+                    </FLabel>
+                    <FLabel>
                         <Radio
                             name="result"
                             onClick={(e) => setResult('stalled')}
                         />
                         Stalled
-                    </Label>
-                    <Label>
+                    </FLabel>
+                    <FLabel>
                         <Radio
                             name="result"
                             onClick={(e) => setResult('tied')}
                         />
                         Tied
-                    </Label>
-                    <Label>
+                    </FLabel>
+                    <FLabel>
                         <Radio
                             name="result"
                             onClick={(e) => setResult('lost')}
                         />
                         Lost
-                    </Label>
+                    </FLabel>
                 </FRow>
                 <FRow>
-                    <Label>Approximate Duration</Label>
-                    <Input
+                    <FLabel>Approximate Duration</FLabel>
+                    <FInput
                         type="number"
                         name="approximateDuration"
                         onChange={(e) => {
@@ -119,15 +128,22 @@ const AddRecord = (props: AddRecordProps) => {
                     />
                 </FRow>
                 <FRow>
-                    <Heading>Result By</Heading>
-                    <Label>
+                    <p
+                        style={{
+                            fontSize: 30,
+                            fontWeight: 800,
+                        }}
+                    >
+                        Result By
+                    </p>
+                    <FLabel>
                         <Radio
                             name="resultby"
                             onClick={(e) => setResultBy(EMatchResult.POINTS)}
                         />
                         Points
-                    </Label>
-                    <Label>
+                    </FLabel>
+                    <FLabel>
                         <Radio
                             name="resultby"
                             onClick={(e) =>
@@ -135,10 +151,10 @@ const AddRecord = (props: AddRecordProps) => {
                             }
                         />
                         Submission
-                    </Label>
+                    </FLabel>
                 </FRow>
                 <FRow>
-                    <Label>Submission Type</Label>
+                    <FLabel>Submission Type</FLabel>
                     <Input
                         type="text"
                         name="submissionType"
@@ -149,7 +165,7 @@ const AddRecord = (props: AddRecordProps) => {
                     />
                 </FRow>
                 <FRow>
-                    <Label>Notes</Label>
+                    <FLabel>Notes</FLabel>
                     <Input
                         type="text"
                         name="notes"
