@@ -1,6 +1,7 @@
 export enum EMatchResult {
     POINTS = 'Points',
     SUBMISSION = 'Submission',
+    DEFAULT = '',
 }
 
 export interface IMatchRecord {

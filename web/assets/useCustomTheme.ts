@@ -6,6 +6,13 @@ export const THEME = {
         background: '#FFFFFF',
         primary: '#FE6356',
         secondary: '#3AEFFE',
+        success: '#00c663',
+        successFocus: '#00a64d',
+        danger: '#ff4444',
+        dangerFocus: '#cc0000',
+        warning: '#FFC107',
+        warningFocus: '#FFA000',
+
         text: {
             primary: '#000000',
             secondary: '#FFFFFF',
@@ -44,6 +51,12 @@ export const useCustomTheme = () => {
     const background = THEME.colors.background;
     const primary = THEME.colors.primary;
     const secondary = THEME.colors.secondary;
+    const success = THEME.colors.success;
+    const successFocus = THEME.colors.successFocus;
+    const danger = THEME.colors.danger;
+    const dangerFocus = THEME.colors.dangerFocus;
+    const warning = THEME.colors.warning;
+    const warningFocus = THEME.colors.warningFocus;
 
     const textPrimary = THEME.colors.text.primary;
     const textSecondary = THEME.colors.text.secondary;
@@ -52,6 +65,12 @@ export const useCustomTheme = () => {
         background,
         primary,
         secondary,
+        success,
+        successFocus,
+        danger,
+        dangerFocus,
+        warning,
+        warningFocus,
         textPrimary,
         textSecondary,
     };

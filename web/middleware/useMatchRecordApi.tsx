@@ -1,12 +1,11 @@
 import { IMatchRecord } from '../domain/MatchRecord';
-import { customFetch, NetworkCode, RequestType } from './CustomFetch';
+import { customFetch, RequestType } from './CustomFetch';
 
 export const useMatchRecordApi = () => {
     const test = async () => {
         const result = await customFetch(RequestType.GET, '/hello', '', {});
-        if (result.status === NetworkCode.OK) {
-            return result;
-        }
+
+        return result;
     };
 
     const getAllMatchRecords = async () => {
@@ -16,9 +15,8 @@ export const useMatchRecordApi = () => {
             '',
             {}
         );
-        if (result.status === NetworkCode.OK) {
-            return result;
-        }
+
+        return result;
     };
 
     const getMatchRecordById = async (id: string) => {
@@ -28,9 +26,8 @@ export const useMatchRecordApi = () => {
             '',
             {}
         );
-        if (result.status === NetworkCode.OK) {
-            return result;
-        }
+
+        return result;
     };
 
     const addExampleMatchRecord = async () => {
@@ -40,21 +37,20 @@ export const useMatchRecordApi = () => {
             '',
             {}
         );
-        if (result.status === NetworkCode.OK) {
-            return result;
-        }
+
+        return result;
     };
 
     const addMatchRecord = async (matchRecord: IMatchRecord) => {
+        console.log('adding match record', matchRecord);
         const result = await customFetch(
             RequestType.POST,
             '/match_record',
             '',
             matchRecord
         );
-        if (result.status === NetworkCode.OK) {
-            return result;
-        }
+
+        return result;
     };
 
     const updateMatchRecord = async (matchRecord: IMatchRecord, id: string) => {
@@ -64,9 +60,8 @@ export const useMatchRecordApi = () => {
             '',
             matchRecord
         );
-        if (result.status === NetworkCode.OK) {
-            return result;
-        }
+
+        return result;
     };
 
     const deleteAllMatchRecords = async () => {
@@ -76,9 +71,8 @@ export const useMatchRecordApi = () => {
             '',
             {}
         );
-        if (result.status === NetworkCode.OK) {
-            return result;
-        }
+
+        return result;
     };
 
     const deleteMatchRecordById = async (id: string) => {
@@ -88,9 +82,8 @@ export const useMatchRecordApi = () => {
             '',
             {}
         );
-        if (result.status === NetworkCode.OK) {
-            return result;
-        }
+
+        return result;
     };
 
     return {

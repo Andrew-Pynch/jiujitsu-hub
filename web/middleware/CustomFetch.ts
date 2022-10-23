@@ -28,7 +28,7 @@ export const customFetch = async (
     route: string,
     bearerToken: string,
     data?: any
-) => {
+): Promise<Response> => {
     try {
         const payloadBody = data
             ? JSON.stringify(data, getCircularReplacer())
@@ -40,8 +40,6 @@ export const customFetch = async (
             process.env.NODE_ENV === 'development'
                 ? 'http://127.0.0.1:8080'
                 : 'https://jiujitsu-hub-production.up.railway.app';
-
-        console.log('API URL: ', reactAppUrl);
 
         const response = await fetch(reactAppUrl + route, {
             method: method,

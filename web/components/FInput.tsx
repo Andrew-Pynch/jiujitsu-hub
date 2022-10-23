@@ -3,6 +3,7 @@ import React, { ChangeEventHandler } from 'react';
 import { useCustomTheme } from '../assets/useCustomTheme';
 
 type FInputProps = {
+    id?: string;
     type?: React.HTMLInputTypeAttribute;
     name?: string;
     value?: string | number | readonly string[] | undefined;
@@ -14,13 +15,12 @@ const FInput = (props: FInputProps) => {
 
     return (
         <Input
-            type="number"
-            name="approximateDuration"
+            id={props.id}
+            type={props.type}
+            name={props.name}
             onChange={props.onChange}
             value={props.value}
-            style={{
-                borderColor: primary,
-            }}
+            autoComplete="off"
             sx={{
                 ':hover': {
                     opacity: 0.8,
@@ -31,6 +31,10 @@ const FInput = (props: FInputProps) => {
                     borderRadius: '8px',
                     borderColor: primary,
                     color: textPrimary,
+                },
+                ':focus-within': {
+                    outline: 'none',
+                    transition: 'all ease-in 0.2s',
                 },
             }}
         />

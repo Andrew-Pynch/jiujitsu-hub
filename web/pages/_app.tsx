@@ -1,5 +1,6 @@
 import { ThemeProvider } from '@emotion/react';
 import type { AppProps } from 'next/app';
+import { Toaster } from 'react-hot-toast';
 import { Box } from 'rebass';
 import { THEME } from '../assets/useCustomTheme';
 import NavigationSidebar from '../components/NavigationSidebar';
@@ -18,6 +19,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     <Component {...pageProps} />
                 </Box>
             </Box>
+            <Toaster />
         </ThemeProvider>
     );
 }
