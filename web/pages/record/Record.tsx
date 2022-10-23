@@ -28,7 +28,8 @@ const Record = (props: RecordProps) => {
         //         method: 'GET',
         //     }
         // );
-        const result = await test();
+        const json = await test();
+        console.log('result json', json);
     };
     getfetch();
     return (

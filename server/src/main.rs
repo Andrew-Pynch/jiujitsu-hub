@@ -13,8 +13,8 @@ use actix_web::{
 };
 
 use api::match_record_request::{
-    delete_all_match_records, get_all_match_records, get_match_record, post_match_record,
-    post_match_record_example, update_match_record_by_id,
+    delete_all_match_records, delete_match_record_by_id, get_all_match_records, get_match_record,
+    post_match_record, post_match_record_example, update_match_record_by_id,
 };
 use dotenv::dotenv;
 
@@ -47,6 +47,7 @@ async fn main() -> std::io::Result<()> {
         let cors = Cors::permissive();
 
         let logger = Logger::default();
+
         App::new()
             .wrap(logger)
             .wrap(cors)
@@ -58,6 +59,7 @@ async fn main() -> std::io::Result<()> {
             .service(post_match_record)
             .service(update_match_record_by_id)
             .service(delete_all_match_records)
+            .service(delete_match_record_by_id)
     })
     .bind(format!("{}:{}", host, port))?
     .run()

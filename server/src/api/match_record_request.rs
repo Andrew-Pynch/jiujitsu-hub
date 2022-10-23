@@ -104,11 +104,26 @@ pub async fn update_match_record_by_id(
     return Ok(Json(match_record_json));
 }
 
-#[delete("match_record/all")]
+#[delete("/match_record/all")]
 async fn delete_all_match_records(rdb_data: Data<Client>) -> Json<String> {
     let mut conn = rdb_data.get_connection().unwrap();
 
     let _: () = redis::cmd("FLUSHDB").query(&mut conn).unwrap();
 
     return Json(String::from("Successfully wiped database"));
+}
+
+#[delete("/match_record/{match_id}")]
+async fn delete_match_record_by_id(
+    rdb_data: Data<Client>,
+    match_id: web::Path<String>,
+) -> Result<Json<String>, error::Error> {
+    let mut conn = rdb_data.get_connection().unwrap();
+
+    let _: () = redis::cmd("DEL")
+        .arg(match_id.clone())
+        .query(&mut conn)
+        .unwrap();
+
+    return Ok(Json("Successfully deleted match record".to_string()));
 }
