@@ -1,9 +1,10 @@
 import type { NextPage } from 'next';
+import ShowRecords from './ShowRecords';
 
 const ShowRecordsPage: NextPage = () => {
     return (
         <>
-            <ShowRecordsPage />
+            <ShowRecords />
         </>
     );
 };

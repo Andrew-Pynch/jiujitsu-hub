@@ -1,9 +1,8 @@
 import type { NextPage } from 'next';
 
-import ShowRecords from './show_records/show_records';
-
 const Home: NextPage = () => {
-    return <ShowRecords />;
+    // return <ShowRecords />;
+    return <></>;
 };
 
 export default Home;

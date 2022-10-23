@@ -19,6 +19,21 @@ const NavigationSidebar = (props: NavigationSidebarProps) => {
         else setWidth('45px');
     };
 
+    interface IRoute {
+        path: string;
+        label: string;
+    }
+    const routes: IRoute[] = [
+        {
+            path: '/show_records',
+            label: 'Show Records',
+        },
+        {
+            path: '/add_record',
+            label: 'Add Record',
+        },
+    ];
+
     return (
         <Box
             width={width}
@@ -42,18 +57,27 @@ const NavigationSidebar = (props: NavigationSidebarProps) => {
             </Button>
             {isOpen && (
                 <Box>
-                    <Box
-                        sx={{
-                            ':hover': {
-                                opacity: 0.8,
-                                cursor: 'pointer',
-                            },
-                        }}
-                    >
-                        <Link>
-                            <Heading>Yeet</Heading>
-                        </Link>
-                    </Box>
+                    {routes.map((route: IRoute, index: number) => {
+                        return (
+                            <Box
+                                key={route.path}
+                                sx={{
+                                    ':hover': {
+                                        backgroundColor: primary,
+                                        cursor: 'pointer',
+                                    },
+                                }}
+                            >
+                                <Link
+                                    href={{
+                                        pathname: route.path,
+                                    }}
+                                >
+                                    <Heading>{route.label}</Heading>
+                                </Link>
+                            </Box>
+                        );
+                    })}
                 </Box>
             )}
         </Box>

@@ -39,6 +39,8 @@ const AddRecord = (props: AddRecordProps) => {
 
         const json = await addMatchRecord(recordToAdd);
         resetFields();
+        // focus cursor on opponent field after submission
+        document.getElementById('opponent')?.focus();
     };
 
     const resetFields = () => {
@@ -52,17 +54,18 @@ const AddRecord = (props: AddRecordProps) => {
     };
 
     return (
-        <Box width="100vw" height="100vh">
+        <Box>
             <Flex
                 sx={{
                     flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
+                    justifyContent: 'flex-start',
+                    alignItems: 'flex-start',
                 }}
             >
                 <FRow>
                     <Label>Opponent</Label>
                     <Input
+                        id="opponent"
                         type="text"
                         name="opponent"
                         onChange={(e) => {
