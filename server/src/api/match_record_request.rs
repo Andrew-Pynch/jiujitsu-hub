@@ -71,8 +71,13 @@ pub async fn post_match_record(
     let mut conn = rdb_data.get_connection().unwrap();
 
     let match_id = uuid::Uuid::new_v4().to_string();
+    let recorded_on = std::time::SystemTime::now()
+        .duration_since(std::time::SystemTime::UNIX_EPOCH)
+        .unwrap()
+        .as_secs() as i32;
 
-    let formatted_match_record = get_formatted_match_record(match_id.clone(), match_record.clone());
+    let formatted_match_record =
+        get_formatted_match_record(match_id.clone(), recorded_on.clone(), match_record.clone());
 
     let match_json = serde_json::to_string(&formatted_match_record).unwrap();
 

@@ -59,7 +59,7 @@ const FDialog = (props: FDialogProps) => {
     const titleStyle = {
         fontSize: '32px',
         fontWeight: '800',
-        color: primary,
+        color: data.color ?? primary,
         maxWidth: '70%',
     } as React.CSSProperties;
 
@@ -88,7 +88,7 @@ const FDialog = (props: FDialogProps) => {
                                         alignItems: 'center',
                                         height: '30px',
                                     }}
-                                    color={primary}
+                                    color={data.color ?? primary}
                                     onClick={closeFDialog}
                                 >
                                     <AiOutlineCloseCircle size={20} />
@@ -96,7 +96,9 @@ const FDialog = (props: FDialogProps) => {
                             )}
                         </div>
                         {data?.children && (
-                            <div style={bodyStyle}>{data.children}</div>
+                            <div key={data.title} style={bodyStyle}>
+                                {data.children}
+                            </div>
                         )}
                     </div>
                 </>

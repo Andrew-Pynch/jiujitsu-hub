@@ -11,7 +11,6 @@ import {
 } from '../../domain/MatchRecord';
 import { NetworkCode } from '../../middleware/CustomFetch';
 import { useMatchRecordApi } from '../../middleware/useMatchRecordApi';
-import { useModalStore } from '../../state/store';
 
 type ShowRecordsProps = {};
 
@@ -82,7 +81,7 @@ const ShowRecords = (props: ShowRecordsProps) => {
                                 {...props}
                                 style={{
                                     ...style,
-                                    width: 800,
+                                    width: '100%',
                                     tableLayout: 'fixed',
                                 }}
                             />
@@ -115,6 +114,10 @@ const ShowRecords = (props: ShowRecordsProps) => {
                                     <th
                                         style={{
                                             background: 'lightgrey',
+                                            width:
+                                                column.Header === 'Notes'
+                                                    ? ''
+                                                    : 100,
                                         }}
                                         {...column.getHeaderProps()}
                                     >
@@ -138,6 +141,14 @@ const ShowRecords = (props: ShowRecordsProps) => {
                                                 ? 'center'
                                                 : 'left',
                                         border: '1px solid #f9f9f9',
+                                        width:
+                                            cell.column.Header === 'Notes'
+                                                ? 'calc(100% - 100px)'
+                                                : 100,
+                                        display:
+                                            cell.column.Header === 'Notes'
+                                                ? 'inline-block'
+                                                : undefined,
                                     }}
                                     {...cell.getCellProps()}
                                 >
@@ -154,6 +165,10 @@ const ShowRecords = (props: ShowRecordsProps) => {
 
 const getColumns = () => {
     return [
+        {
+            Header: 'Recorded On',
+            accessor: 'recorded_on',
+        },
         {
             Header: 'Edit',
             accessor: 'edit',

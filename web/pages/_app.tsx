@@ -5,9 +5,12 @@ import { Box } from 'rebass';
 import { THEME } from '../assets/useCustomTheme';
 import FDialog from '../components/dialogs/FDialog';
 import NavigationSidebar from '../components/NavigationSidebar';
+import { clearStores } from '../state/store';
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
+    clearStores();
+
     return (
         // Provide the client to your App
         <ThemeProvider theme={THEME}>

@@ -1,4 +1,5 @@
 export enum EModalType {
+    EDIT_MATCH_RECORD,
     DELETE_MATCH_RECORD,
 }
 
@@ -6,17 +7,19 @@ export interface IToggleFModal {
     title?: string;
     type?: EModalType;
     children?: React.ReactNode;
-    maxWidth?: string;
+    maxWidth?: string | number;
+    maxHeight?: string | number;
     color?: string;
+    preventClose?: boolean;
 }
 
 export interface IModalState {
     coords: { x: number; y: number };
     dialogIsOpen: boolean;
-    data: any;
+    data: IToggleFModal;
 
     // actions
-    toggleFDialog: (isOpen: boolean, data: any) => void;
+    toggleFDialog: (isOpen: boolean, data: IToggleFModal) => void;
 
     clearModalStore: () => void;
 }
@@ -26,7 +29,7 @@ export const modalStore = (set: any, get: () => IModalState): IModalState => ({
     dialogIsOpen: false,
     data: {},
 
-    toggleFDialog: (isOpen: boolean, data: any) => {
+    toggleFDialog: (isOpen: boolean, data: IToggleFModal) => {
         try {
             set(() => ({
                 dialogIsOpen: isOpen,

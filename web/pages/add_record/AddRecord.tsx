@@ -82,6 +82,7 @@ const AddRecord = (props: AddRecordProps) => {
                 }
             ),
             notes: notes,
+            recorded_on: 0,
         };
 
         const addResult = await addMatchRecord(recordToAdd);

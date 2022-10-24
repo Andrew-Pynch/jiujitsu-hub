@@ -1,8 +1,11 @@
 import { HiPencil, HiTrash } from 'react-icons/hi2';
 import { useCustomTheme } from '../assets/useCustomTheme';
+import DeleteMatchRecordDialog from '../components/dialogs/DeleteMatchRecordDialog';
+import EditMatchRecordDialog from '../components/dialogs/EditMatchRecordDialog';
 import SexyButton from '../components/FButton';
 import { EModalType } from '../state/modalsStore';
 import { useModalStore } from '../state/store';
+import { getFormatedTimeStamp } from './Time';
 
 export enum EMatchResult {
     POINTS = 'Points',
@@ -22,6 +25,7 @@ export interface IMatchRecord {
     submission_type: string;
     positions_struggled_in: string[];
     notes: string;
+    recorded_on: number;
 }
 
 export const parseMatchRecords = (parsedJson: any): IMatchRecord[] => {
@@ -38,6 +42,7 @@ export const parseMatchRecords = (parsedJson: any): IMatchRecord[] => {
             submission_type: matchRecord.submission_type,
             posistions_struggled_in: matchRecord.positions_struggled_in,
             notes: matchRecord.notes,
+            recorded_on: matchRecord.recorded_on,
         };
     });
 };
@@ -57,14 +62,21 @@ export const useGetMatchRecordRows = () => {
 
     const handleToggleEditMatchRecord = (match: IMatchRecord) => {
         toggleFDialog(true, {
-            title: 'Archive Event',
-            type: EModalType.DELETE_MATCH_RECORD,
-            children: (
-                <>
-                    <div>hi</div>
-                </>
-            ),
+            title: 'Edit Match Record',
+            type: EModalType.EDIT_MATCH_RECORD,
+            children: <EditMatchRecordDialog match={match} />,
             maxWidth: '1000px',
+            color: warningFocus,
+        });
+    };
+
+    const handleToggleDeleteMatchRecord = (match: IMatchRecord) => {
+        toggleFDialog(true, {
+            title: 'Delete Match Record',
+            type: EModalType.DELETE_MATCH_RECORD,
+            children: <DeleteMatchRecordDialog match={match} />,
+            maxWidth: '1000px',
+            color: danger,
         });
     };
 
@@ -72,7 +84,9 @@ export const useGetMatchRecordRows = () => {
         const rows = [];
         for (let i = 0; i < matchRecords.length; i++) {
             const match = matchRecords[i];
+
             rows.push({
+                recorded_on: getFormatedTimeStamp(match.recorded_on),
                 edit: (
                     <SexyButton
                         onClick={() => handleToggleEditMatchRecord(match)}
@@ -83,7 +97,10 @@ export const useGetMatchRecordRows = () => {
                 ),
 
                 delete: (
-                    <SexyButton color={danger}>
+                    <SexyButton
+                        color={danger}
+                        onClick={() => handleToggleDeleteMatchRecord(match)}
+                    >
                         <HiTrash />
                     </SexyButton>
                 ),

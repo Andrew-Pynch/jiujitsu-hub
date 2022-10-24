@@ -1,4 +1,6 @@
 use serde::{Deserialize, Serialize};
+use std::time::{SystemTime, UNIX_EPOCH};
+use uuid::timestamp;
 
 #[derive(Debug, Clone, Deserialize, Serialize, Copy)]
 pub enum EMatchResult {
@@ -19,6 +21,7 @@ pub struct MatchRecord {
     pub submission_type: String,
     pub positions_struggled_in: Vec<String>,
     pub notes: String,
+    pub recorded_on: i32,
 }
 
 pub fn get_example_match_record(match_id: String) -> MatchRecord {
@@ -34,10 +37,19 @@ pub fn get_example_match_record(match_id: String) -> MatchRecord {
         submission_type: String::from("Armbar"),
         positions_struggled_in: vec![String::from("Guard"), String::from("Side Control")],
         notes: "This was a great match!".to_string(),
+        // set recorded_on to SystemTime::now() as i32
+        recorded_on: SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap()
+            .as_secs() as i32,
     };
 }
 
-pub fn get_formatted_match_record(match_id: String, match_record: MatchRecord) -> MatchRecord {
+pub fn get_formatted_match_record(
+    match_id: String,
+    recorded_on: i32,
+    match_record: MatchRecord,
+) -> MatchRecord {
     return MatchRecord {
         match_id: String::from(match_id),
         opponent: match_record.opponent,
@@ -50,5 +62,6 @@ pub fn get_formatted_match_record(match_id: String, match_record: MatchRecord) -
         submission_type: match_record.submission_type,
         positions_struggled_in: match_record.positions_struggled_in,
         notes: match_record.notes,
+        recorded_on: recorded_on,
     };
 }
