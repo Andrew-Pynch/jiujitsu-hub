@@ -1,3 +1,7 @@
+import { HiPencil, HiTrash } from 'react-icons/hi2';
+import { useCustomTheme } from '../assets/useCustomTheme';
+import SexyButton from '../components/FButton';
+
 export enum EMatchResult {
     POINTS = 'Points',
     SUBMISSION = 'Submission',
@@ -42,4 +46,40 @@ export const getMatchResult = (match: IMatchRecord) => {
     if (match.tied) return 'Tied';
     if (match.lost) return 'Lost';
     else return 'Tied';
+};
+
+export const useGetMatchRecordRows = () => {
+    const { danger, warningFocus } = useCustomTheme();
+
+    const getRows = (matchRecords: IMatchRecord[]) => {
+        const rows = [];
+        for (let i = 0; i < matchRecords.length; i++) {
+            const match = matchRecords[i];
+            rows.push({
+                edit: (
+                    <SexyButton color={warningFocus}>
+                        <HiPencil />
+                    </SexyButton>
+                ),
+
+                delete: (
+                    <SexyButton color={danger}>
+                        <HiTrash />
+                    </SexyButton>
+                ),
+
+                opponent: match.opponent,
+                result: getMatchResult(match),
+                result_by: match.result_by,
+                submission_type: match.submission_type,
+                positions_struggled_in: match.positions_struggled_in,
+                notes: match.notes,
+            });
+        }
+        return rows;
+    };
+
+    return {
+        getRows,
+    };
 };

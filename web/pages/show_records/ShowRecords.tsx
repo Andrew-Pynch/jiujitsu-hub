@@ -1,11 +1,13 @@
-import { Column, ReactGrid, Row } from '@silevis/reactgrid';
-import '@silevis/reactgrid/styles.css';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
+import { useTable } from 'react-table';
+import { TableVirtuoso } from 'react-virtuoso';
+import { Box } from 'rebass';
 import { useCustomTheme } from '../../assets/useCustomTheme';
 import {
-    getMatchResult,
     IMatchRecord,
     parseMatchRecords,
+    useGetMatchRecordRows,
 } from '../../domain/MatchRecord';
 import { NetworkCode } from '../../middleware/CustomFetch';
 import { useMatchRecordApi } from '../../middleware/useMatchRecordApi';
@@ -13,14 +15,30 @@ import { useMatchRecordApi } from '../../middleware/useMatchRecordApi';
 type ShowRecordsProps = {};
 
 const ShowRecords = (props: ShowRecordsProps) => {
-    const { primary, secondary } = useCustomTheme();
+    const {
+        primary,
+        secondary,
+        success,
+        successFocus,
+        danger,
+        dangerFocus,
+        warning,
+        warningFocus,
+    } = useCustomTheme();
 
     const { getAllMatchRecords } = useMatchRecordApi();
+    const { getRows } = useGetMatchRecordRows();
 
     const [loading, setLoading] = useState(true);
     const [matchRecords, setMatchRecords] = useState<IMatchRecord[]>([]);
-    const [rows, setRows] = useState<Row[]>([]);
-    const [columns, setColumns] = useState<Column[]>([]);
+    const columns: any = useMemo(() => getColumns(), []);
+    const data = useMemo(() => getRows(matchRecords), [matchRecords]);
+
+    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+        useTable({
+            columns,
+            data,
+        });
 
     useEffect(() => {
         const handleGetAllMatchRecords = async () => {
@@ -37,14 +55,6 @@ const ShowRecords = (props: ShowRecordsProps) => {
                     const matchRecords: IMatchRecord[] =
                         parseMatchRecords(parsedJson);
                     setMatchRecords(matchRecords);
-                    const rows = getRows(matchRecords);
-                    // delete the last element of rows
-                    // because it is an empty row
-                    rows.pop();
-                    console.log('rows', parsedJson, rows, matchRecords);
-                    setRows(rows);
-
-                    setColumns(getColumns());
                     setLoading(false);
                 }
             }
@@ -52,55 +62,115 @@ const ShowRecords = (props: ShowRecordsProps) => {
         handleGetAllMatchRecords();
     }, []);
 
-    const getColumns = (): Column[] => [
-        { columnId: 'match_id', width: 150 },
-        { columnId: 'opponent', width: 150 },
-        { columnId: 'result', width: 150 },
-        { columnId: 'approximate_match_duration', width: 100 },
-        { columnId: 'result_by', width: 150 },
-        { columnId: 'submission_type', width: 150 },
-        // { columnId: 'positions_struggled_in', width: 150 },
-        { columnId: 'notes', width: 150 },
-    ];
-
-    const headerRow: Row = {
-        rowId: 'header',
-        cells: [
-            { type: 'header', text: 'Match ID' },
-            { type: 'header', text: 'Opponent' },
-            { type: 'header', text: 'Result' },
-            { type: 'header', text: 'Approximate Match Duration' },
-            { type: 'header', text: 'Result By' },
-            { type: 'header', text: 'Submission Type' },
-            // { type: 'header', text: 'Positions Struggled In' },
-            { type: 'header', text: 'Notes' },
-        ],
-    };
-
-    const getRows = (matches: IMatchRecord[]): Row[] => [
-        headerRow,
-        ...matches.map<Row>((match, idx) => ({
-            rowId: idx,
-            cells: [
-                { type: 'text', text: match.match_id },
-                { type: 'text', text: match.opponent },
-                { type: 'text', text: getMatchResult(match) },
-                { type: 'number', value: match.approximate_match_duration },
-                { type: 'text', text: match.result_by },
-                { type: 'text', text: match.submission_type },
-                // { type: 'text', text: match.positions_struggled_in.toString() },
-                { type: 'text', text: match.notes },
-            ],
-        })),
-    ];
-
     if (loading) return <>Loading...</>;
     return (
-        <div>
+        <Box>
             <h1>Match Records</h1>
-            <ReactGrid rows={rows} columns={columns} />
-        </div>
+
+            <Box>
+                <TableVirtuoso
+                    style={{
+                        height: '150px',
+                        width: '100%',
+                    }}
+                    totalCount={rows.length}
+                    components={{
+                        Table: ({ style, ...props }) => (
+                            <table
+                                {...getTableProps()}
+                                {...props}
+                                style={{
+                                    ...style,
+                                    width: 800,
+                                    tableLayout: 'fixed',
+                                }}
+                            />
+                        ),
+                        // eslint-disable-next-line react/display-name
+                        TableBody: React.forwardRef(
+                            ({ style, ...props }, ref) => (
+                                <tbody
+                                    {...getTableBodyProps()}
+                                    {...props}
+                                    ref={ref}
+                                />
+                            )
+                        ),
+                        TableRow: (props) => {
+                            const index = props['data-index'];
+                            const row = rows[index];
+                            return <tr {...props} {...row.getRowProps()} />;
+                        },
+                    }}
+                    fixedHeaderContent={() => {
+                        return headerGroups.map((headerGroup) => (
+                            // eslint-disable-next-line react/jsx-key
+                            <tr
+                                {...headerGroup.getHeaderGroupProps()}
+                                style={{ background: 'white' }}
+                            >
+                                {headerGroup.headers.map((column) => (
+                                    // eslint-disable-next-line react/jsx-key
+                                    <th {...column.getHeaderProps()}>
+                                        {column.render('Header')}
+                                    </th>
+                                ))}
+                            </tr>
+                        ));
+                    }}
+                    itemContent={(index, user) => {
+                        const row = rows[index];
+                        prepareRow(row);
+                        return row.cells.map((cell) => {
+                            return (
+                                // eslint-disable-next-line react/jsx-key
+                                <td {...cell.getCellProps()}>
+                                    {cell.render('Cell')}
+                                </td>
+                            );
+                        });
+                    }}
+                />
+            </Box>
+        </Box>
     );
+};
+
+const getColumns = () => {
+    return [
+        {
+            Header: 'Edit',
+            accessor: 'edit',
+        },
+        {
+            Header: 'Delete',
+            accessor: 'delete',
+        },
+        {
+            Header: 'Opponent',
+            accessor: 'opponent', // accessor is the "key" in the data
+        },
+        {
+            Header: 'Result',
+            accessor: 'result',
+        },
+        {
+            Header: 'Result By',
+            accessor: 'result_by',
+        },
+        {
+            Header: 'Submission Type',
+            accessor: 'submission_type',
+        },
+        {
+            Header: 'Positions Struggled In',
+            accessor: 'positions_struggled_in',
+        },
+        {
+            Header: 'Notes',
+            accessor: 'notes',
+        },
+    ];
 };
 
 export default ShowRecords;

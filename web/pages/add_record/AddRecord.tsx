@@ -53,7 +53,7 @@ const AddRecord = (props: AddRecordProps) => {
             submissionType !== '',
             positionsStruggledIn.length > 0
         );
-        console.log('setting should disable', shouldDisable);
+
         setSaveDisabled(shouldDisable);
     }, [
         opponent,
@@ -68,15 +68,19 @@ const AddRecord = (props: AddRecordProps) => {
     const handleAddMatchRecord = async () => {
         const recordToAdd: IMatchRecord = {
             match_id: '',
-            opponent: opponent,
+            opponent: opponent.toLocaleLowerCase(),
             won: result === 'won',
             lost: result === 'lost',
             tied: result === 'tied',
             stalled: result === 'stalled',
             approximate_match_duration: approximateDuration,
             result_by: resultBy,
-            submission_type: submissionType,
-            positions_struggled_in: positionsStruggledIn,
+            submission_type: submissionType.toLocaleLowerCase(),
+            positions_struggled_in: positionsStruggledIn.map(
+                (position: string) => {
+                    return position.toLocaleLowerCase();
+                }
+            ),
             notes: notes,
         };
 
@@ -111,15 +115,20 @@ const AddRecord = (props: AddRecordProps) => {
                     alignItems: 'flex-start',
                 }}
             >
-                <FRow>
-                    <p
-                        style={{
-                            fontSize: 30,
-                            fontWeight: 800,
+                <FRow style={{ marginTop: '2em' }}>
+                    <FLabel>Opponent *</FLabel>
+                    <FInput
+                        id="opponent"
+                        type="text"
+                        name="opponent"
+                        onChange={(e) => {
+                            setOponent(e.target.value);
                         }}
-                    >
-                        Result *
-                    </p>
+                        value={opponent}
+                    />
+                </FRow>
+                <FRow>
+                    <FLabel>Result *</FLabel>
                     <FLabel>
                         <FRadio
                             name="result"
@@ -150,14 +159,7 @@ const AddRecord = (props: AddRecordProps) => {
                     </FLabel>
                 </FRow>
                 <FRow>
-                    <p
-                        style={{
-                            fontSize: 30,
-                            fontWeight: 800,
-                        }}
-                    >
-                        Result By *
-                    </p>
+                    <FLabel>Result By *</FLabel>
                     <FLabel>
                         <FRadio
                             name="resultby"
@@ -175,18 +177,7 @@ const AddRecord = (props: AddRecordProps) => {
                         Submission
                     </FLabel>
                 </FRow>
-                <FRow>
-                    <FLabel>Opponent *</FLabel>
-                    <FInput
-                        id="opponent"
-                        type="text"
-                        name="opponent"
-                        onChange={(e) => {
-                            setOponent(e.target.value);
-                        }}
-                        value={opponent}
-                    />
-                </FRow>
+
                 <FRow>
                     <FLabel>Approximate Duration *</FLabel>
                     <FInput
@@ -240,7 +231,7 @@ const AddRecord = (props: AddRecordProps) => {
                                       // outline: 'none',
                                       outline: 'none',
                                       borderColor: success,
-                                      boxShadow: `0 0 0 0.2rem #${successFocus}`,
+                                      boxShadow: `0 0 0 0.2rem green`,
                                   },
                               }
                             : {}

@@ -10,6 +10,7 @@ const FRow = (props: FRowProps) => {
     return (
         <>
             <Flex
+                marginBottom={'1em'}
                 style={props.style}
                 sx={{
                     flexDirection: 'row',
