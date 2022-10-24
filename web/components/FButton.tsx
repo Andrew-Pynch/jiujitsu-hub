@@ -5,11 +5,14 @@ type SexyButtonProps = {
     color: string;
     children?: React.ReactNode;
     label?: string;
+    onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    style?: React.CSSProperties;
 };
 
 const SexyButton = (props: SexyButtonProps) => {
     return (
         <Button
+            onClick={props.onClick}
             backgroundColor={'transparent'}
             sx={{
                 color: `${props.color}`,
@@ -24,6 +27,7 @@ const SexyButton = (props: SexyButtonProps) => {
                     color: '#FFF',
                 },
             }}
+            style={props.style}
         >
             {props.children ?? props.label}
         </Button>

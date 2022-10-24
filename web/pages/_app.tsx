@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app';
 import { Toaster } from 'react-hot-toast';
 import { Box } from 'rebass';
 import { THEME } from '../assets/useCustomTheme';
+import FDialog from '../components/dialogs/FDialog';
 import NavigationSidebar from '../components/NavigationSidebar';
 import '../styles/globals.css';
 
@@ -20,6 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 </Box>
             </Box>
             <Toaster />
+            <FDialog />
         </ThemeProvider>
     );
 }

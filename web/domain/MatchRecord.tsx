@@ -1,6 +1,8 @@
 import { HiPencil, HiTrash } from 'react-icons/hi2';
 import { useCustomTheme } from '../assets/useCustomTheme';
 import SexyButton from '../components/FButton';
+import { EModalType } from '../state/modalsStore';
+import { useModalStore } from '../state/store';
 
 export enum EMatchResult {
     POINTS = 'Points',
@@ -51,13 +53,31 @@ export const getMatchResult = (match: IMatchRecord) => {
 export const useGetMatchRecordRows = () => {
     const { danger, warningFocus } = useCustomTheme();
 
+    const toggleFDialog = useModalStore((state) => state.toggleFDialog);
+
+    const handleToggleEditMatchRecord = (match: IMatchRecord) => {
+        toggleFDialog(true, {
+            title: 'Archive Event',
+            type: EModalType.DELETE_MATCH_RECORD,
+            children: (
+                <>
+                    <div>hi</div>
+                </>
+            ),
+            maxWidth: '1000px',
+        });
+    };
+
     const getRows = (matchRecords: IMatchRecord[]) => {
         const rows = [];
         for (let i = 0; i < matchRecords.length; i++) {
             const match = matchRecords[i];
             rows.push({
                 edit: (
-                    <SexyButton color={warningFocus}>
+                    <SexyButton
+                        onClick={() => handleToggleEditMatchRecord(match)}
+                        color={warningFocus}
+                    >
                         <HiPencil />
                     </SexyButton>
                 ),

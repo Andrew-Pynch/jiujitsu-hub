@@ -11,6 +11,7 @@ import {
 } from '../../domain/MatchRecord';
 import { NetworkCode } from '../../middleware/CustomFetch';
 import { useMatchRecordApi } from '../../middleware/useMatchRecordApi';
+import { useModalStore } from '../../state/store';
 
 type ShowRecordsProps = {};
 
@@ -70,7 +71,7 @@ const ShowRecords = (props: ShowRecordsProps) => {
             <Box>
                 <TableVirtuoso
                     style={{
-                        height: '150px',
+                        height: '200px',
                         width: '100%',
                     }}
                     totalCount={rows.length}
@@ -111,7 +112,12 @@ const ShowRecords = (props: ShowRecordsProps) => {
                             >
                                 {headerGroup.headers.map((column) => (
                                     // eslint-disable-next-line react/jsx-key
-                                    <th {...column.getHeaderProps()}>
+                                    <th
+                                        style={{
+                                            background: 'lightgrey',
+                                        }}
+                                        {...column.getHeaderProps()}
+                                    >
                                         {column.render('Header')}
                                     </th>
                                 ))}
@@ -124,7 +130,17 @@ const ShowRecords = (props: ShowRecordsProps) => {
                         return row.cells.map((cell) => {
                             return (
                                 // eslint-disable-next-line react/jsx-key
-                                <td {...cell.getCellProps()}>
+                                <td
+                                    style={{
+                                        textAlign:
+                                            cell.column.Header === 'Delete' ||
+                                            cell.column.Header === 'Edit'
+                                                ? 'center'
+                                                : 'left',
+                                        border: '1px solid #f9f9f9',
+                                    }}
+                                    {...cell.getCellProps()}
+                                >
                                     {cell.render('Cell')}
                                 </td>
                             );
