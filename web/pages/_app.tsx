@@ -15,11 +15,16 @@ function MyApp({ Component, pageProps }: AppProps) {
         // Provide the client to your App
         <ThemeProvider theme={THEME}>
             <Box display={'flex'} flex={1} height={'100vh'}>
-                <Box flexDirection={'column'} maxWidth="15%">
+                <Box flexDirection={'column'} maxWidth="20%">
                     <NavigationSidebar />
                 </Box>
-                <Box width="5%" />
-                <Box flexDirection={'column'} maxWidth="80%" flexGrow={1}>
+
+                <Box
+                    flexDirection={'column'}
+                    marginLeft="5%"
+                    maxWidth="75%"
+                    flexGrow={1}
+                >
                     <Component {...pageProps} />
                 </Box>
             </Box>

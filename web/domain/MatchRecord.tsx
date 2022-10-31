@@ -48,11 +48,11 @@ export const parseMatchRecords = (parsedJson: any): IMatchRecord[] => {
 };
 
 export const getMatchResult = (match: IMatchRecord) => {
-    if (match.won) return 'Won';
-    if (match.stalled) return 'Stalled';
-    if (match.tied) return 'Tied';
-    if (match.lost) return 'Lost';
-    else return 'Tied';
+    if (match.won) return 'won';
+    if (match.stalled) return 'stalled';
+    if (match.tied) return 'tied';
+    if (match.lost) return 'lost';
+    else return 'tied';
 };
 
 export const useGetMatchRecordRows = () => {
