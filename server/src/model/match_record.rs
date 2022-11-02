@@ -44,7 +44,7 @@ pub fn get_example_match_record(match_id: String) -> MatchRecord {
 
 pub fn get_formatted_match_record(
     match_id: String,
-    recorded_on: u64,
+    // recorded_on: u64,
     match_record: MatchRecord,
 ) -> MatchRecord {
     return MatchRecord {
@@ -59,6 +59,6 @@ pub fn get_formatted_match_record(
         submission_type: match_record.submission_type,
         positions_struggled_in: match_record.positions_struggled_in,
         notes: match_record.notes,
-        recorded_on: recorded_on,
+        recorded_on: match_record.recorded_on,
     };
 }

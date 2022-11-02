@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { createRef, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Box, Button, Flex } from 'rebass';
 import { useCustomTheme } from '../../assets/useCustomTheme';
@@ -17,7 +17,10 @@ const AddRecord = (props: AddRecordProps) => {
 
     const { addMatchRecord } = useMatchRecordApi();
 
+    const [recordedOn, setRecordedOn] = useState<number>(Date.now());
     const [opponent, setOponent] = useState('');
+    const opponentReference = createRef<HTMLInputElement>();
+
     const [result, setResult] = useState<
         'won' | 'stalled' | 'tied' | 'lost' | ''
     >('');
@@ -34,6 +37,10 @@ const AddRecord = (props: AddRecordProps) => {
     const [saveDisabled, setSaveDisabled] = useState(true);
 
     useEffect(() => {
+        opponentReference.current?.focus();
+    }, [opponentReference]);
+
+    useEffect(() => {
         let shouldDisable = true;
         if (
             opponent !== '' &&
@@ -45,14 +52,6 @@ const AddRecord = (props: AddRecordProps) => {
         ) {
             shouldDisable = false;
         }
-        console.log(
-            opponent !== '',
-            result !== '',
-            approximateDuration !== 0,
-            resultBy !== EMatchResult.DEFAULT,
-            submissionType !== '',
-            positionsStruggledIn.length > 0
-        );
 
         setSaveDisabled(shouldDisable);
     }, [
@@ -91,6 +90,7 @@ const AddRecord = (props: AddRecordProps) => {
             resetFields();
             // focus cursor on opponent field after submission
             document.getElementById('opponent')?.focus();
+
             toast.success('Match record added successfully!');
         } else {
             toast.error('Error adding match record.');
@@ -117,9 +117,22 @@ const AddRecord = (props: AddRecordProps) => {
                 }}
             >
                 <FRow style={{ marginTop: '2em' }}>
+                    <FLabel>Recorded On *</FLabel>
+                    <FInput
+                        id="recordedOn"
+                        type="datetime-local"
+                        name="recordedOn"
+                        value={new Date(recordedOn).toISOString().slice(0, -1)}
+                        onChange={(e) => {
+                            setRecordedOn(new Date(e.target.value).getTime());
+                        }}
+                    />
+                </FRow>
+                <FRow>
                     <FLabel>Opponent *</FLabel>
                     <FInput
                         id="opponent"
+                        ref={opponentReference}
                         type="text"
                         name="opponent"
                         onChange={(e) => {

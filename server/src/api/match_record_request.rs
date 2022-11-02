@@ -74,16 +74,15 @@ pub async fn post_match_record(
 
     let match_id = uuid::Uuid::new_v4().to_string();
 
-    let start = SystemTime::now();
-    let since_the_epoch = start
-        .duration_since(UNIX_EPOCH)
-        .expect("Time went backwards");
-    println!("{:?}", since_the_epoch);
-    let recorded_on =
-        since_the_epoch.as_secs() * 1000 + since_the_epoch.subsec_nanos() as u64 / 1_000_000;
+    // let start = SystemTime::now();
+    // let since_the_epoch = start
+    //     .duration_since(UNIX_EPOCH)
+    //     .expect("Time went backwards");
+    // println!("{:?}", since_the_epoch);
+    // let recorded_on =
+    //     since_the_epoch.as_secs() * 1000 + since_the_epoch.subsec_nanos() as u64 / 1_000_000;
 
-    let formatted_match_record =
-        get_formatted_match_record(match_id.clone(), recorded_on.clone(), match_record.clone());
+    let formatted_match_record = get_formatted_match_record(match_id.clone(), match_record.clone());
 
     let match_json = serde_json::to_string(&formatted_match_record).unwrap();
 

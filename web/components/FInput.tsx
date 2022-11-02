@@ -4,6 +4,8 @@ import { useCustomTheme } from '../assets/useCustomTheme';
 
 type FInputProps = {
     id?: string;
+    ref?: React.RefObject<HTMLInputElement>;
+    autoFocus?: boolean;
     type?: React.HTMLInputTypeAttribute;
     name?: string;
     value?: string | number | readonly string[] | undefined;
@@ -16,6 +18,7 @@ const FInput = (props: FInputProps) => {
     return (
         <Input
             id={props.id}
+            ref={props.ref}
             type={props.type}
             name={props.name}
             onChange={props.onChange}

@@ -25,8 +25,6 @@ const DeleteMatchRecordDialog = (props: DeleteMatchRecordDialogProps) => {
         const deleteResult = await deleteMatchRecordById(props.match.match_id);
 
         if (deleteResult.status === NetworkCode.OK) {
-            toast.success('Match record deleted!');
-
             // remove the match from the matches array
             // const newMatches = props.matches.splice(props.index, 1);
             const newMatches = props.matches.filter(
