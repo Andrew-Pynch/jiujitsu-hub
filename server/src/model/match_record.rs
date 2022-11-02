@@ -21,7 +21,7 @@ pub struct MatchRecord {
     pub submission_type: String,
     pub positions_struggled_in: Vec<String>,
     pub notes: String,
-    pub recorded_on: i32,
+    pub recorded_on: u64,
 }
 
 pub fn get_example_match_record(match_id: String) -> MatchRecord {
@@ -38,16 +38,13 @@ pub fn get_example_match_record(match_id: String) -> MatchRecord {
         positions_struggled_in: vec![String::from("Guard"), String::from("Side Control")],
         notes: "This was a great match!".to_string(),
         // set recorded_on to SystemTime::now() as i32
-        recorded_on: SystemTime::now()
-            .duration_since(UNIX_EPOCH)
-            .unwrap()
-            .as_secs() as i32,
+        recorded_on: 0,
     };
 }
 
 pub fn get_formatted_match_record(
     match_id: String,
-    recorded_on: i32,
+    recorded_on: u64,
     match_record: MatchRecord,
 ) -> MatchRecord {
     return MatchRecord {

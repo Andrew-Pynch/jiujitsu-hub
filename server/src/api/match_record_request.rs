@@ -1,3 +1,5 @@
+use std::time::{SystemTime, UNIX_EPOCH};
+
 use actix_web::{
     delete, error, get, post, put,
     web::{self, Data, Json},
@@ -71,10 +73,14 @@ pub async fn post_match_record(
     let mut conn = rdb_data.get_connection().unwrap();
 
     let match_id = uuid::Uuid::new_v4().to_string();
-    let recorded_on = std::time::SystemTime::now()
-        .duration_since(std::time::SystemTime::UNIX_EPOCH)
-        .unwrap()
-        .as_secs() as i32;
+
+    let start = SystemTime::now();
+    let since_the_epoch = start
+        .duration_since(UNIX_EPOCH)
+        .expect("Time went backwards");
+    println!("{:?}", since_the_epoch);
+    let recorded_on =
+        since_the_epoch.as_secs() * 1000 + since_the_epoch.subsec_nanos() as u64 / 1_000_000;
 
     let formatted_match_record =
         get_formatted_match_record(match_id.clone(), recorded_on.clone(), match_record.clone());

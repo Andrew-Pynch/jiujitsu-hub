@@ -9,7 +9,10 @@ import SexyButton from '../FButton';
 import FRow from '../FRow';
 
 type DeleteMatchRecordDialogProps = {
+    matches: IMatchRecord[];
+    setMatches: React.Dispatch<React.SetStateAction<IMatchRecord[]>>;
     match: IMatchRecord;
+    index: number;
 };
 
 const DeleteMatchRecordDialog = (props: DeleteMatchRecordDialogProps) => {
@@ -23,6 +26,15 @@ const DeleteMatchRecordDialog = (props: DeleteMatchRecordDialogProps) => {
 
         if (deleteResult.status === NetworkCode.OK) {
             toast.success('Match record deleted!');
+
+            // remove the match from the matches array
+            // const newMatches = props.matches.splice(props.index, 1);
+            const newMatches = props.matches.filter(
+                (match) => match.match_id !== props.match.match_id
+            );
+            // update the matches array
+            props.setMatches(newMatches);
+
             toggleFDialog(false, {});
         } else {
             toast.error('Error deleting match record!');

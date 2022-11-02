@@ -9,19 +9,25 @@ import {
 } from '../../domain/MatchRecord';
 import { NetworkCode } from '../../middleware/CustomFetch';
 import { useMatchRecordApi } from '../../middleware/useMatchRecordApi';
+import { useModalStore } from '../../state/store';
 import FInput from '../FInput';
 import FLabel from '../FLabel';
 import FRadio from '../FRadio';
 import FRow from '../FRow';
 
 type EditMatchRecordDialogProps = {
+    matches: IMatchRecord[];
+    setMatches: React.Dispatch<React.SetStateAction<IMatchRecord[]>>;
     match: IMatchRecord;
+    index: number;
 };
 
 const EditMatchRecordDialog = (props: EditMatchRecordDialogProps) => {
     const { primary, secondary, success, successFocus } = useCustomTheme();
 
     const { updateMatchRecord } = useMatchRecordApi();
+
+    const toggleFDialog = useModalStore((state) => state.toggleFDialog);
 
     const [opponent, setOponent] = useState(props.match.opponent);
     const [result, setResult] = useState<
@@ -95,6 +101,14 @@ const EditMatchRecordDialog = (props: EditMatchRecordDialogProps) => {
             // focus cursor on opponent field after submission
             document.getElementById('opponent')?.focus();
             toast.success('Match record added successfully!');
+
+            // update the match
+            let newMatches = [...props.matches];
+            newMatches[props.index] = recordToUpdate;
+            props.setMatches(newMatches);
+
+            // close dialog
+            toggleFDialog(false, {});
         } else {
             toast.error('Error adding match record.');
         }

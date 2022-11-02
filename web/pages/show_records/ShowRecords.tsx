@@ -32,7 +32,11 @@ const ShowRecords = (props: ShowRecordsProps) => {
     const [loading, setLoading] = useState(true);
     const [matchRecords, setMatchRecords] = useState<IMatchRecord[]>([]);
     const columns: any = useMemo(() => getColumns(), []);
-    const data = useMemo(() => getRows(matchRecords), [matchRecords]);
+    const data = useMemo(
+        () => getRows(matchRecords, setMatchRecords),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [matchRecords, setMatchRecords]
+    );
 
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
         useTable({
@@ -204,4 +208,4 @@ const getColumns = () => {
     ];
 };
 
-export default ShowRecords;
+export default React.memo(ShowRecords);

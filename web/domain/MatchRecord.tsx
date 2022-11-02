@@ -60,27 +60,54 @@ export const useGetMatchRecordRows = () => {
 
     const toggleFDialog = useModalStore((state) => state.toggleFDialog);
 
-    const handleToggleEditMatchRecord = (match: IMatchRecord) => {
+    const handleToggleEditMatchRecord = (
+        matchRecords: IMatchRecord[],
+        setMatchRecords: React.Dispatch<React.SetStateAction<IMatchRecord[]>>,
+        match: IMatchRecord,
+        index: number
+    ) => {
         toggleFDialog(true, {
             title: 'Edit Match Record',
             type: EModalType.EDIT_MATCH_RECORD,
-            children: <EditMatchRecordDialog match={match} />,
+            children: (
+                <EditMatchRecordDialog
+                    matches={matchRecords}
+                    setMatches={setMatchRecords}
+                    match={match}
+                    index={index}
+                />
+            ),
             maxWidth: '1000px',
             color: warningFocus,
         });
     };
 
-    const handleToggleDeleteMatchRecord = (match: IMatchRecord) => {
+    const handleToggleDeleteMatchRecord = (
+        matchRecords: IMatchRecord[],
+        setMatchRecords: React.Dispatch<React.SetStateAction<IMatchRecord[]>>,
+        match: IMatchRecord,
+        index: number
+    ) => {
         toggleFDialog(true, {
             title: 'Delete Match Record',
             type: EModalType.DELETE_MATCH_RECORD,
-            children: <DeleteMatchRecordDialog match={match} />,
+            children: (
+                <DeleteMatchRecordDialog
+                    matches={matchRecords}
+                    setMatches={setMatchRecords}
+                    match={match}
+                    index={index}
+                />
+            ),
             maxWidth: '1000px',
             color: danger,
         });
     };
 
-    const getRows = (matchRecords: IMatchRecord[]) => {
+    const getRows = (
+        matchRecords: IMatchRecord[],
+        setMatchRecords: React.Dispatch<React.SetStateAction<IMatchRecord[]>>
+    ) => {
         const rows = [];
         for (let i = 0; i < matchRecords.length; i++) {
             const match = matchRecords[i];
@@ -89,7 +116,14 @@ export const useGetMatchRecordRows = () => {
                 recorded_on: getFormatedTimeStamp(match.recorded_on),
                 edit: (
                     <SexyButton
-                        onClick={() => handleToggleEditMatchRecord(match)}
+                        onClick={() =>
+                            handleToggleEditMatchRecord(
+                                matchRecords,
+                                setMatchRecords,
+                                match,
+                                i
+                            )
+                        }
                         color={warningFocus}
                     >
                         <HiPencil />
@@ -99,7 +133,14 @@ export const useGetMatchRecordRows = () => {
                 delete: (
                     <SexyButton
                         color={danger}
-                        onClick={() => handleToggleDeleteMatchRecord(match)}
+                        onClick={() =>
+                            handleToggleDeleteMatchRecord(
+                                matchRecords,
+                                setMatchRecords,
+                                match,
+                                i
+                            )
+                        }
                     >
                         <HiTrash />
                     </SexyButton>
